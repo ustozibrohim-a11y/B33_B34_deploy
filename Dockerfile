@@ -8,13 +8,12 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
+    netcat \
     && rm -rf /var/lib/apt/lists/*
 
 COPY req.txt .
 RUN pip install --no-cache-dir -r req.txt
 
 COPY . .
-
-RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]

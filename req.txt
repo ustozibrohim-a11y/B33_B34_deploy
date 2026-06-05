@@ -1,5 +1,6 @@
 django
 pillow
+psycopg2
 drf-spectacular
 pytelegrambotapi
 django-quill-editor

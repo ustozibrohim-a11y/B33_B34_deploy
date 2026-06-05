@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    {% for i in object_list %}
+    <div class="col-12 col-md-4 col-lg-3 mb-3">
+        <div class="card">
+            <div class="position-relative">
+                <img src="{{ i.image.url }}" height="350" class="card-img-top" alt="...">
+                <span class="position-absolute py-1 px-2 bg-success text-white rounded-end"
+                      style="left:0;">{{ i.category.name }}</span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ i.name }}</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0 py-2 d-flex justify-content-between">
+                        <span class="fw-bold">Price:</span> <span>{{ i.price }}$</span>
+                    </li>
+                    <li class="list-group-item px-0 py-2 d-flex justify-content-between">
+                        {% if i.stock == 0 %}
+                        <span class="fw-bold text-danger">Stock:</span>
+                        <span class="text-danger">{{ i.stock }}</span>
+                        {% else %}
+                        <span class="fw-bold">Stock:</span>
+                        <span>{{ i.stock }}</span>
+                        {% endif %}
+                    </li>
+                </ul>
+                <div class="btn-group btn-group-sm w-100">
+                    <a href="{% url 'add_to_cart' product_id=i.id %}" class="btn btn-success">Add To Cart 🛒</a>
+                    <a href="{% url 'wishlist_ctl' product_id=i.id %}" class="btn btn-outline-success">❤️</a>
+                    <a href="" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}">
+                        💬 {{ i.comments.all.count }}
+                    </a>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal{{ i.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ i.id }}"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel{{ i.id }}">{{ i.name }}'s Comments</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% if user.is_authenticated %}
+                                    <form action="{% url 'write_comment' i.id %}" method="post">
+                                        {% csrf_token %}
+                                        <label for="comment" class="fw-bold mb-2">Comment</label>
+                                        <textarea name="comment" class="form-control" required
+                                                  id="comment" rows="4" placeholder="The best product!"></textarea>
+                                        <button type="submit" class="btn btn-sm btn-outline-success my-2 w-100">Send</button>
+                                    </form>
+                                {% endif %}
+                                <hr>
+                                <div class="comments">
+                                    <h5>Comments</h5>
+                                    {% for c in i.comments.all %}
+                                        <div class="border px-3 mb-2 py-2">
+                                            <span><b>{{ c.user.username }}</b> | {{ c.added_at }}</span>
+                                            <br>
+                                            <ul class="mb-0">
+                                                <li>{{ c.comment }}</li>
+                                            </ul>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

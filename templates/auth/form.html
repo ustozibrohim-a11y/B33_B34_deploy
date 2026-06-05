@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 col-md-4 m-auto">
+        <h2 class="text-center py-3">
+            <b class="text-success">Join</b> Now <br> Buy <b class="text-success">Anything</b>
+        </h2>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <br>
+            {% if request.path == '/register' %}
+                <code>Already Have An Account ? <a href="{% url 'login' %}">login now</a></code>
+            {% else %}
+                <code>Don't Have An Account ? <a href="{% url 'register' %}">register now</a></code>
+            {% endif %}
+            <br> <br>
+            <button type="submit" class="btn btn-sm btn-success w-100">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

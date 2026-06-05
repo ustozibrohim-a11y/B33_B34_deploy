@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-@$rygj_u1xot@khhg99hz+2b7$a^%nfv-3)d^u!9*syu%d!d$!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["expence-tracker.uz"]
 
 # Application definition
 
@@ -199,3 +199,9 @@ SIMPLE_JWT = {
     "REVOKE_TOKEN_CLAIM": "hash_password",
     "CHECK_USER_IS_ACTIVE": True,
 }
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_TRUSTED_ORIGINS = [
+    "https://expence-tracker.uz",
+    "https://www.expence-tracker.uz",
+]
